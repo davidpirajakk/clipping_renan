@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clipping {{ row['data'] }} — {{ pessoa }}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #222; }
+
+  header { background: #1a2a4a; color: #fff; padding: 24px 40px; }
+  .header-top { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .back { color: #93b4ff; text-decoration: none; font-size: 0.85rem; }
+  .back:hover { color: #fff; }
+  header h1 { font-size: 1.4rem; font-weight: 700; }
+  header p { font-size: 0.82rem; opacity: 0.7; margin-top: 4px; }
+
+  .resumo { background: #fff; border-left: 4px solid #2563eb; margin: 24px 40px 0;
+    padding: 16px 24px; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    display: flex; gap: 40px; align-items: center; max-width: 860px; }
+  .stat .num { font-size: 2rem; font-weight: 700; color: #2563eb; }
+  .stat .lbl { font-size: 0.72rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  main { max-width: 900px; margin: 24px auto; padding: 0 20px 60px; }
+
+  .fonte { background: #fff; border-radius: 8px; margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); overflow: hidden; }
+  .fonte-header { background: #f0f4ff; padding: 12px 20px; display: flex;
+    align-items: center; justify-content: space-between; border-bottom: 1px solid #dde4f0; }
+  .fonte-header h2 { font-size: 0.95rem; color: #1a2a4a; font-weight: 600; }
+  .badge { background: #2563eb; color: #fff; border-radius: 12px;
+    padding: 2px 10px; font-size: 0.75rem; }
+
+  .noticia { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; }
+  .noticia:last-child { border-bottom: none; }
+  .noticia h3 { font-size: 0.95rem; margin-bottom: 5px; line-height: 1.4; }
+  .noticia h3 a { color: #1a2a4a; text-decoration: none; }
+  .noticia h3 a:hover { color: #2563eb; text-decoration: underline; }
+  .resumo-texto { font-size: 0.83rem; color: #555; line-height: 1.5; margin-bottom: 6px; }
+  .data-pub { font-size: 0.73rem; color: #bbb; }
+
+  .vazio { text-align: center; color: #aaa; padding: 60px 0; }
+  footer { text-align: center; font-size: 0.75rem; color: #bbb; padding: 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="back" href="/">← Voltar</a>
+  </div>
+  <h1>📰 Clipping — {{ row['data'][8:10] }}/{{ row['data'][5:7] }}/{{ row['data'][:4] }}</h1>
+  <p>{{ pessoa }} · Pré-candidato à Presidência da República</p>
+</header>
+
+<div class="resumo">
+  <div class="stat">
+    <div class="num">{{ row['total'] }}</div>
+    <div class="lbl">Notícias</div>
+  </div>
+  <div class="stat">
+    <div class="num">{{ row['fontes'] }}</div>
+    <div class="lbl">Fontes</div>
+  </div>
+  <div class="stat">
+    <div class="num">{{ row['criado_em'][11:16] }}</div>
+    <div class="lbl">Hora de geração</div>
+  </div>
+</div>
+
+<main>
+  {% if noticias %}
+    {% for fonte, entradas in noticias.items() %}
+    <div class="fonte">
+      <div class="fonte-header">
+        <h2>{{ fonte }}</h2>
+        <span class="badge">{{ entradas|length }} notícia(s)</span>
+      </div>
+      {% for n in entradas %}
+      <div class="noticia">
+        <h3><a href="{{ n.link }}" target="_blank" rel="noopener">{{ n.titulo }}</a></h3>
+        {% if n.resumo %}
+        <p class="resumo-texto">{{ n.resumo[:280] }}{% if n.resumo|length > 280 %}…{% endif %}</p>
+        {% endif %}
+        <span class="data-pub">{{ n.data }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="vazio">Nenhuma notícia encontrada neste dia.</div>
+  {% endif %}
+</main>
+
+<footer>Clipping automatizado · {{ pessoa }} · {{ row['data'] }}</footer>
+</body>
+</html>

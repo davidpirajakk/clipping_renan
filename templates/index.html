@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clipping — {{ pessoa }}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #222; }
+
+  header { background: #1a2a4a; color: #fff; padding: 28px 40px; }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
+  header p { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
+
+  main { max-width: 860px; margin: 32px auto; padding: 0 20px 60px; }
+
+  h2 { font-size: 1rem; color: #555; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 16px; }
+
+  .grid { display: flex; flex-direction: column; gap: 12px; }
+
+  .card { background: #fff; border-radius: 8px; padding: 20px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); display: flex; align-items: center;
+    justify-content: space-between; text-decoration: none; color: inherit;
+    transition: box-shadow .15s; border-left: 4px solid #2563eb; }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+
+  .card-data { font-size: 1.1rem; font-weight: 600; color: #1a2a4a; }
+  .card-sub { font-size: 0.8rem; color: #888; margin-top: 3px; }
+
+  .stats { display: flex; gap: 24px; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 1.4rem; font-weight: 700; color: #2563eb; }
+  .stat .lbl { font-size: 0.7rem; color: #aaa; text-transform: uppercase; }
+
+  .vazio { text-align: center; color: #aaa; padding: 60px 0; }
+  footer { text-align: center; font-size: 0.75rem; color: #bbb; padding: 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📰 Clipping de Imprensa — {{ pessoa }}</h1>
+  <p>Pré-candidato à Presidência da República · Monitoramento diário</p>
+</header>
+
+<main>
+  <h2>Relatórios disponíveis</h2>
+
+  {% if clippings %}
+  <div class="grid">
+    {% for c in clippings %}
+    <a class="card" href="/clipping/{{ c['data'] }}">
+      <div>
+        <div class="card-data">{{ c['data'][8:10] }}/{{ c['data'][5:7] }}/{{ c['data'][:4] }}</div>
+        <div class="card-sub">Gerado às {{ c['criado_em'][11:16] }}</div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="num">{{ c['total'] }}</div>
+          <div class="lbl">Notícias</div>
+        </div>
+        <div class="stat">
+          <div class="num">{{ c['fontes'] }}</div>
+          <div class="lbl">Fontes</div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="vazio">Nenhum clipping gerado ainda. Aguarde o próximo horário agendado.</div>
+  {% endif %}
+</main>
+
+<footer>Clipping automatizado · {{ pessoa }} · Atualiza diariamente às 08h</footer>
+</body>
+</html>
