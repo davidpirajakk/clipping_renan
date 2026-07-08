@@ -8,11 +8,20 @@ import html
 import re
 
 PESSOA = "Renan Santos"
-TERMOS_BUSCA = ["renan santos"]
+TERMOS_BUSCA = [
+    "renan santos",
+    "renan santos mbl",
+    "candidato renan",
+    "pré-candidato renan",
+    "partido missão",
+    "missão renan",
+]
 
 FEEDS = {
-    "Google News": "https://news.google.com/rss/search?q=%22Renan+Santos%22+presidencia&hl=pt-BR&gl=BR&ceid=BR:pt-419",
-    "Google News (Geral)": "https://news.google.com/rss/search?q=%22Renan+Santos%22&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "Google News – Renan Santos": "https://news.google.com/rss/search?q=%22Renan+Santos%22&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "Google News – Presidência": "https://news.google.com/rss/search?q=%22Renan+Santos%22+presid%C3%AAncia&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "Google News – Partido Missão": "https://news.google.com/rss/search?q=%22Partido+Miss%C3%A3o%22&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "Google News – MBL Renan": "https://news.google.com/rss/search?q=%22Renan+Santos%22+MBL&hl=pt-BR&gl=BR&ceid=BR:pt-419",
     "G1": "https://g1.globo.com/rss/g1/",
     "UOL": "https://rss.uol.com.br/feed/noticias.xml",
     "Folha de S.Paulo": "https://feeds.folha.uol.com.br/folha/poder/rss091.xml",
