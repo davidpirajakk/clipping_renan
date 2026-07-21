@@ -229,6 +229,17 @@
 
   main { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
 
+  .btn-atualizar {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border-hover);
+    color: var(--text-secondary); font-size: 0.8rem; font-weight: 500;
+    padding: 7px 14px; border-radius: 8px; cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .btn-atualizar:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-atualizar.loading i { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   @media (max-width: 640px) {
     header, .hero, main { padding-left: 20px; padding-right: 20px; }
     .hero h1 { font-size: 1.5rem; }
@@ -244,7 +255,12 @@
     <i class="ti ti-news" aria-hidden="true"></i>
     Clipping <span>/ {{ pessoa }}</span>
   </div>
-  <div class="badge-live">Monitoramento ativo</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="btn-atualizar" onclick="atualizar()" id="btn">
+      <i class="ti ti-refresh" aria-hidden="true"></i> Atualizar agora
+    </button>
+    <div class="badge-live">Monitoramento ativo</div>
+  </div>
 </header>
 
 <div class="hero">
@@ -313,5 +329,22 @@
   Clipping automatizado · {{ pessoa }} · Atualiza diariamente às 08h (Brasília)
 </footer>
 
+<script>
+async function atualizar() {
+  const btn = document.getElementById('btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  btn.querySelector('i').className = 'ti ti-refresh';
+  try {
+    const res = await fetch('/gerar', { method: 'POST' });
+    if (res.ok) window.location.reload();
+  } catch(e) {
+    alert('Erro ao atualizar. Tente novamente.');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+</script>
 </body>
 </html>

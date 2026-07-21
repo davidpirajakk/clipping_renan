@@ -123,7 +123,7 @@ def main():
 
     # Agenda geração diária + dispara busca inicial em background
     scheduler = BackgroundScheduler(timezone="America/Sao_Paulo")
-    scheduler.add_job(gerar_clipping, "cron", hour=HORA_AGENDAMENTO, minute=0)
+    scheduler.add_job(gerar_clipping, "interval", hours=3)
     scheduler.add_job(gerar_se_necessario, "date")  # roda imediatamente em thread
     scheduler.start()
 
