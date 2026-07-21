@@ -6,6 +6,7 @@ Busca notícias em múltiplas fontes e retorna lista estruturada.
 import feedparser
 import html
 import re
+import time
 
 PESSOA = "Renan Santos"
 TERMOS_BUSCA = [
@@ -55,7 +56,8 @@ def buscar_noticias() -> dict:
     resultados = {}
     for nome, url in FEEDS.items():
         try:
-            feed = feedparser.parse(url, request_headers={"User-Agent": "Mozilla/5.0"})
+            bust = f"{'&' if '?' in url else '?'}_={int(time.time())}"
+    feed = feedparser.parse(url + bust, request_headers={"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"})
             entradas = []
             for entry in feed.entries:
                 if _menciona_renan(entry):
